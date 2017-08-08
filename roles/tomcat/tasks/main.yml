@@ -1,0 +1,26 @@
+- name: Creating tomcat group ({{tomcat_group}})
+  group:
+    name: '{{tomcat_group}}'
+
+- name: Creating tomcat user ({{tomcat_user}})
+  user:
+    name: '{{tomcat_user}}'
+    group: '{{tomcat_group}}'
+
+- name: Download Tomcat
+  get_url:
+    url: http://archive.apache.org/dist/tomcat/tomcat-{{tomcat_major}}/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz
+    dest: ./apache-tomcat.tar.gz
+  notify: 
+    - Unpack Tomcat
+    - Creating directory
+    - Copy Tomcat
+    - Setting permitions
+    - Copy Tomcat Service file
+    - Fix Tomcat Service file Ver
+    - Fix Tomcat Service file User
+    - Fix Tomcat Service file Group
+    - Add tomcat user
+    - Restart Tomcat
+- name: Activating handlers
+  meta: flush_handlers

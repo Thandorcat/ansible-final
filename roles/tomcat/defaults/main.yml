@@ -1,0 +1,6 @@
+tomcat_group: tomcat_as_group
+tomcat_user: tomcat_as
+tomcat_major: 8
+tomcat_minor: 0.35
+tomcat_version: "{{tomcat_major}}.{{tomcat_minor}}"
+tomcat_home: /opt/tomcat/

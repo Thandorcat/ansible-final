@@ -1,0 +1,10 @@
+- include: createvm.yml
+
+- name: Installing tomcat
+  hosts: vagrant
+  become: true
+  
+  roles:
+  - java
+  - tomcat
+  - nginx

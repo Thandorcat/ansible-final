@@ -1,0 +1,25 @@
+---
+# tasks file for deploy
+
+- name: Deploying artifact
+  deploy:
+    war: '{{war}}'
+    url: localhost:8080
+    username: user
+    password: tomcat
+  register: out
+
+- name: Creating file
+  file:
+    path: /var/lib/tomcat/webapps
+    state: directory
+    owner: tomcat_as
+  delegate_to: vagrant
+
+- name: Writing info in file
+  template:
+    src: deploy-info.txt.j2
+    dest: /var/lib/tomcat/webapps/deploy-info.txt
+  delegate_to: vagrant
+
+

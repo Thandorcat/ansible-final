@@ -1,0 +1,7 @@
+- name: Deleting host
+  hosts: localhost
+  tasks:
+  - name: Destroying vagrant
+    vagrant_module: 
+      path: ./
+      state: destroyed

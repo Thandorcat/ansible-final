@@ -1,0 +1,7 @@
+- name: Check Java {{java_version}}
+  shell: if [[ $(java -version 2>&1 | grep {{java_version}} )  > 0 ]] ; \
+      then echo "Java installed!" ;  \
+      else echo "Java not installed!" ; \
+      fi
+  register: out
+- debug: var=out.stdout

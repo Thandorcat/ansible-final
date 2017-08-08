@@ -1,0 +1,9 @@
+- name: Check Tomcat Page
+  uri:
+    url: "http://{{tomcat_address}}:{{tomcat_port}}"
+    return_content: yes
+  register: webpage
+
+- name: Fail if tomcat is wrong or offline
+  fail:
+  when: "tomcat_version not in webpage.content"

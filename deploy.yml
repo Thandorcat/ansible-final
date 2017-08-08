@@ -1,0 +1,29 @@
+- include: createvm.yml
+
+- name: Deploy
+  hosts: localhost
+  become: true
+  
+  vars:
+    host_name: vagrant
+    jobname: lookup('env','JOB_NAME')
+
+  pre_tasks:
+    - name: Unpack artifact
+      unarchive:
+        src: '{{artefact}}'
+        dest: ./
+
+    - name: Jenkins job name      
+      command: echo "{{ lookup('env','JOB_NAME') }}"     
+      register: name 
+
+    - set_fact: 
+        war=mnt-exam.war
+        jobname={{name.stdout}}
+
+
+  roles:
+  - deploy
+
+

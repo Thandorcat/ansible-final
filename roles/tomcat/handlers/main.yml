@@ -1,0 +1,57 @@
+- name: Unpack Tomcat
+  unarchive:
+    remote_src: true
+    src: apache-tomcat.tar.gz
+    dest: ./
+
+- name: Creating directory
+  file:
+    path: '{{tomcat_home}}{{tomcat_version}}'
+    state: directory
+
+- name: Copy Tomcat
+  shell: cp -R apache-tomcat-{{tomcat_version}}/* {{tomcat_home}}{{tomcat_version}}/
+
+
+- name: Setting permitions
+  file:
+    recurse: true
+    path: '{{tomcat_home}}{{tomcat_version}}'
+    owner: '{{tomcat_user}}'
+    group: '{{tomcat_group}}'
+
+- name: Copy Tomcat Service file
+  copy:
+    src: tomcat.service
+    dest: /etc/systemd/system/tomcat.service
+
+- name: Fix Tomcat Service file Ver
+  replace:
+    path: /etc/systemd/system/tomcat.service
+    regexp: '{version}'
+    replace: '{{tomcat_version}}'
+
+- name: Fix Tomcat Service file User
+  replace:
+    path: /etc/systemd/system/tomcat.service
+    regexp: '{user}'
+    replace: '{{tomcat_user}}'
+
+- name: Fix Tomcat Service file Group
+  replace:
+    path: /etc/systemd/system/tomcat.service
+    regexp: '{group}'
+    replace: '{{tomcat_group}}'
+
+- name: Add tomcat user
+  copy:
+    dest: /opt/tomcat/{{tomcat_version}}/conf/tomcat-users.xml
+    src: tomcat-users.xml
+    owner: '{{tomcat_user}}'
+
+
+- name: Restart Tomcat
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: tomcat

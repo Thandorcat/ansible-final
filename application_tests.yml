@@ -1,0 +1,26 @@
+- include: createvm.yml
+
+
+- name: Verification
+  hosts: vagrant
+  
+  roles:
+    - java_test
+    - tomcat_test
+    - nginx_test
+
+  tasks:
+    - name: Check Tomcat Page
+      uri:
+        url: "http://localhost:8080/mnt-exam/"
+        return_content: yes
+      register: webpage
+
+    - name: Failed feployment
+      fail:
+      when: "webpage.status != 200"
+
+
+
+
+

@@ -1,0 +1,18 @@
+- name: Creating host
+  hosts: localhost
+  tasks:
+  - name: Starting vagrant
+    vagrant_module: 
+      path: ./
+      state: started
+    register: result
+
+
+  - name: Creating host
+    add_host: 
+      name: vagrant
+      ansible_port: "{{result.data.port}}"
+      ansible_host: "{{result.data.address}}"
+      ansible_connection: ssh
+      ansible_user: "{{result.data.username}}"
+      ansible_ssh_private_key_file: "{{result.data.path_to_ssh}}"

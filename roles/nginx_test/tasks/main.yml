@@ -1,0 +1,5 @@
+- name: Check Nginx Page
+  uri:
+    url: "http://{{nginx_address}}:{{nginx_port}}"
+    return_content: yes
+  register: webpage
